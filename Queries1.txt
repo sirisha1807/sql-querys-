@@ -1,0 +1,74 @@
+--Use database
+use trainerInfo
+
+--Create collection
+db.createCollection("trainers",{capped:true, autoIndexId:true, size:6142800, max:1000})
+
+--Insert record to collection
+db.trainers.insert({
+ name:'Shashi',
+ skills: 'HTML, HTML5, CSS3, JavaScript',
+ tags : ['HTML','HTML5','CSS3','JavaScript']
+ likes: 7000
+})
+
+--Display dbs
+show dbs
+
+--Show the current db
+db
+
+--Trainer name is equal to Saheer
+db.trainers.find({name:'Saheer'})
+
+--Trainer name is equal to Shashi
+db.trainers.find({name: 'Shashi'})
+
+--Trainer name is equal to Shashi in formatted output
+db.trainers.find({name: 'Shashi'}).pretty()
+
+--Trainer likes = 7000
+db.trainers.find({likes: 7000}).pretty()
+
+--Trainer likes >5000
+db.trainers.find({likes: {$gt: 5000}}).pretty()
+
+--Trainer likes <5000
+db.trainers.find({likes: {$lt: 5000}}).pretty()
+
+--Trainer likes >=5000
+db.trainers.find({likes: {$gte: 5000}}).pretty()
+
+--Trainer likes <=5000
+db.trainers.find({likes: {$lte: 5000}}).pretty()
+
+--Trainers whos tags are HTML or CSS3
+db.trainers.find({tags:{$in:['HTML','CSS3']}}).pretty()
+
+--Trainers whos tags are Java or JavaScript
+db.trainers.find({tags:{$in:['Java','JavaScript']}}).pretty()
+
+--Trainers whos tags are Java or HTML, sort by name
+db.trainers.find({tags:{$in:['Java','JavaScript']}}).sort({name:1}).pretty()
+
+--Trainers whos tags are Java or HTML, sort by name desc
+db.trainers.find({tags:{$in:['Java','JavaScript']}}).sort({name:-1}).pretty()
+
+--Trainer likes >=5000 and <=7000
+ db.trainers.find({likes: {$gte: 5000, $lte: 7000}}).pretty()
+ 
+ --Trainers whos tags are HTML and CSS3
+
+ 
+ --Update record
+ --update likes from 6000 to 6010
+ db.trainers.update({likes:6000},{$set:{likes:6010}})
+ 
+db.trainers.find({$or:[{skills:'Java'},{skills:'HTML5'}]}).pretty()
+
+--Trainer whos likes >5000 and skills is HTML5
+db.trainers.find({$and:[{tags:'HTML'},{likes:{$gt:5000}}]}).pretty()
+
+--Create cursor
+var mycur = db.trainers.find({tags:'HTML'})
+mycur.forEach(printjson)
